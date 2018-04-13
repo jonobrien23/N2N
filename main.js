@@ -10,7 +10,7 @@ function start(quiz){
     // main game loop
     for (const [question,answer] of quiz){
        const response = ask(question);
-       check(reponse,answer);
+       check(response,answer);
     }
     // end of main loop
     
