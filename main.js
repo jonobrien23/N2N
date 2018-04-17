@@ -18,10 +18,10 @@ const view = {
         target.innerHTML = content;
     },
     show(element){
-        element.style.display = `block`;
+        element.style.display = 'block';
     },
     hide(element){
-        element.style.display = `none`;
+        element.style.display = 'none';
     }
 };
 
@@ -35,6 +35,7 @@ const game = {
             this.question = question;
             this.ask();
         }
+        view.hide(view.start);
         // end of main loop
         this.gameOver();
     },
@@ -60,6 +61,7 @@ const game = {
     },
     gameOver() {
         view.render(view.info, `Game Over! You scored ${this.score} point${this.score !== 1 ? 's' : ''}`);
+        view.show(view.start);
     }
 }
 
