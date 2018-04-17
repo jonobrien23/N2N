@@ -1,39 +1,58 @@
 const quiz = [
-    { name: "Superman", realName: "Clark Kent"},
-    { name: "Wonder Woman", realName: "Diana Prince"},
-    { name: "Batman", realName: "Bruce Wayne"}
+    { name: "Superman", realName: "Clark Kent" },
+    { name: "Wonder Woman", realName: "Diana Prince" },
+    { name: "Batman", realName: "Bruce Wayne" }
 ];
 
+// View object
+const view = {
+    score: document.querySelector('#score strong'),
+    question: document.getElementById('question'),
+    result: document.getElementById('result'),
+    info: document.getElementById('info'),
+    render(target, content, attributes) {
+        for (const key in attributes) {
+            target.setAttribute(key, attributes[key]);
+        }
+        target.innerHTML = content;
+    }
+};
+
+// Game object
 const game = {
-    start(quiz){
+    start(quiz) {
         this.questions = [...quiz];
         this.score = 0;
         // main game loop
-        for (const question of this.questions){
-           this.question = question;
-           this.ask();
+        for (const question of this.questions) {
+            this.question = question;
+            this.ask();
         }
         // end of main loop
         this.gameOver();
     },
-    
+
     // function declerations   
-    ask(){
-       const question = `What is ${this.question.name}'s real name?`;
-       const response = prompt(question);
-       this.check(response);
+    ask() {
+        const question = `What is ${this.question.name}'s real name?`;
+        view.render(view.question, question);
+        const response = prompt(question);
+        this.check(response);
     },
-    check(response){
+    check(response) {
         const answer = this.question.realName;
-        if (response === answer){
-           alert (`Correct!`);
-           this.score++;
-       } else {
-           alert (`Wrong! The correct answer is ${answer}`);
-       };
+        if (response === answer) {
+            view.render(view.result, 'Correct!', { 'class': 'correct' })
+            alert(`Correct!`);
+            this.score++;
+            view.render(view.score, this.score);
+        } else {
+            view.render(view.result, `Wrong! The answer is ${answer}`, { 'class': 'wrong' });
+            alert(`Wrong! The correct answer is ${answer}`);
+        };
     },
-    gameOver(){
-       alert (`Game Over! You scored ${this.score} point${this.score !== 1 ? 's' : ''}`);
+    gameOver() {
+        view.render(view.info, `Game Over! You scored ${this.score} point${this.score !== 1 ? 's' : ''}`);
     }
 }
 
