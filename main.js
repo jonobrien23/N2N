@@ -28,14 +28,14 @@ const view = {
 // Game object
 const game = {
     start(quiz) {
+        view.hide(view.start);
         this.questions = [...quiz];
         this.score = 0;
         // main game loop
         for (const question of this.questions) {
             this.question = question;
             this.ask();
-        }
-        view.hide(view.start);
+        };
         // end of main loop
         this.gameOver();
     },
