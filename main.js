@@ -6,6 +6,7 @@ const quiz = [
 
 // View object
 const view = {
+    start: document.getElementById(`start`),
     score: document.querySelector('#score strong'),
     question: document.getElementById('question'),
     result: document.getElementById('result'),
@@ -15,6 +16,12 @@ const view = {
             target.setAttribute(key, attributes[key]);
         }
         target.innerHTML = content;
+    },
+    show(element){
+        element.style.display = `block`;
+    },
+    hide(element){
+        element.style.display = `none`;
     }
 };
 
@@ -56,4 +63,4 @@ const game = {
     }
 }
 
-game.start(quiz);
+view.start.addEventListener(`click`, () => game.start(quiz), false);
