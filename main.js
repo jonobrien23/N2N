@@ -6,7 +6,7 @@ const quiz = [
 
 // View object
 const view = {
-    start: document.getElementById(`start`),
+    start: document.getElementById('start'),
     score: document.querySelector('#score strong'),
     question: document.getElementById('question'),
     result: document.getElementById('result'),
