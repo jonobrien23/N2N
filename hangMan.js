@@ -6,6 +6,7 @@ let hiddenLetters = [];
 let wordLetters = [];
 let guessMade = [];
 let lettersGuessed = [];
+let uniqueLetters = new Set();
 
 // Choose random word and add to the word and reveal array
 function getWord() {
@@ -16,6 +17,7 @@ function getWord() {
     for (let i = 0; i < wordLetters.length; i++) {
         hiddenLetters[i] = '_';
     };
+    uniqueLetters = new Set(guessWord);
 }
 
 // enter letter and check for single charachter and already used
@@ -23,13 +25,16 @@ function letterGuess() {
     let alreadyUsed = 1;
     guessCount = wrongGuesses + guessCorrect;
     guessLetter = prompt(`Guess a letter`);
-    while (guessLetter.length !== 1) {
+    guessLetter = guessLetter.toLowerCase();
+    while (guessLetter.length !== 1 || isValidCraracter(guessLetter)) {
         guessLetter = prompt(`Please enter 1 letter only`);
+        guessLetter = guessLetter.toLowerCase();
     };
     while (alreadyUsed !== 0) {
         for (let i = 0; i <= lettersGuessed.length; i++) {
             if (lettersGuessed[i] === guessLetter) {
                 guessLetter = prompt(`Letter already used, please try again`);
+                guessLetter = guessLetter.toLowerCase();
                 alreadyUsed = 1;
             } else {
                 alreadyUsed = 0;
@@ -39,6 +44,7 @@ function letterGuess() {
     lettersGuessed[guessCount] = guessLetter;
 }
 
+// Make sure the entered character ia a valid letter a -> z
 function isValidCraracter(guessLetter){
     let myRegExp = /[a-z]/ig;
     return ! (myRegExp.test(guessLetter));
@@ -71,8 +77,9 @@ function correctLetters(letter) {
 getWord();
 console.log(hiddenLetters.join(''));
 console.log(hiddenLetters.length + ' Letters in the word');
+console.log(uniqueLetters.size);
 
-while (wrongGuesses < 10) {
+while ((guessCorrect < uniqueLetters.size) && (wrongGuesses < 10)) {
     letterGuess();
     letterSearch(guessLetter);
     correctLetters(guessLetter);
@@ -83,3 +90,5 @@ while (wrongGuesses < 10) {
     console.log(`incorrect guesses: ${wrongGuesses}`);
     console.log(`correct guesses: ${guessCorrect}`);
 }
+
+console.log (`game over`);
