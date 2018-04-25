@@ -4,13 +4,24 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
+    <title>Guess The Word Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 
 <body>
+    <header>
+        <h1>Guess The Word</h1>
+    </header>
+    <h4>Reveal the word by guessing the hidden letters. 10 Wrong answers means Game Over.</h4>
+    <button id="evaluateLetter" onclick="hangMan.startGame()">Start</button>
+    <p id="result"> </p>
+    <p class="hiddenWord guessWord" id="guessTheWord"></p>
+    <p id="scoresRight">correct guesses: 0</p>
+    <p id="scoresWrong">incorrect guesses: 0</p>
+    <input type="button" value="test"><input type="button" value="test2">
+    <div id="letterButtons"></div>
     <script src="hangMan.js"></script>
 </body>
 
-</html>>
+</html>
