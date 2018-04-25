@@ -3,25 +3,28 @@ const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m
     "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 let letterButtons = document.getElementById("letterButtons");
 
-const myWords = ["Hello", "Goodbye", "Today", "Tomorrow"];
-let guessCount = wrongGuesses = guessCorrect = 0;
-let guessWord, guessLetter;
-let hiddenLetters = [];
-let wordLetters = [];
-let lettersGuessed = [];
-let uniqueLetters = new Set();
+const myWords = ["Hello", "Goodbye", "Today", "Tomorrow"];  // Words for game
+let guessCount = wrongGuesses = guessCorrect = 0;           // Score counters
+let guessWord;                                              // Word for player to guess 
+let guessLetter;                                            // Letter the player chooses
+let hiddenLetters = [];                                     // Array to hide and reveal word0 per guess
+let wordLetters = [];                                       // Array of the letters in the word to guess
+let lettersGuessed = [];                                    // Array of letters guessed so far
+let uniqueLetters = new Set();                              // Unique letters in the word to guess
 
 createButtons();
 
 function createButtons() {
-    let button = document.createElement("button");
+    //let button = document.createElement("button");
     for (let i = 0; i < alphabet.length; i++) {
+        let button = document.createElement("button");
         button.id = alphabet[i];
         button.innerText = alphabet[i];
         letterButtons.appendChild(button);
     }
 }
 
+// DOM elements to update as the game goes on
 const view = {
     scoreRight: document.getElementById('scoresRight'),
     scoreWrong: document.getElementById('scoresWrong'),
@@ -31,6 +34,7 @@ const view = {
     letterEntered: document.getElementById('letterEntered')
 }
 
+// Main game object
 const hangMan = {
     startGame: function () {
         this.getWord();
@@ -60,10 +64,12 @@ const hangMan = {
         guessCount = wrongGuesses + guessCorrect;
         guessLetter = prompt(`Guess a letter`);
         guessLetter = guessLetter.toLowerCase();
+        // Loop to check the letter is singular and valid
         while (guessLetter.length !== 1 || this.isValidCraracter(guessLetter)) {
             guessLetter = prompt(`Please enter 1 letter only`);
             guessLetter = guessLetter.toLowerCase();
         };
+        // Loop to check the letter is unique (may be removed if buttons are implemented)
         while (alreadyUsed !== 0) {
             for (let i = 0; i <= lettersGuessed.length; i++) {
                 if (lettersGuessed[i] === guessLetter) {
