@@ -9,20 +9,7 @@ let guessWord;                                              // Word for player t
 let guessLetter;                                            // Letter the player chooses
 let hiddenLetters = [];                                     // Array to hide and reveal word0 per guess
 let wordLetters = [];                                       // Array of the letters in the word to guess
-let lettersGuessed = [];                                    // Array of letters guessed so far
 let uniqueLetters = new Set();                              // Unique letters in the word to guess
-
-createButtons();
-
-function createButtons() {
-    //let button = document.createElement("button");
-    for (let i = 0; i < alphabet.length; i++) {
-        let button = document.createElement("button");
-        button.id = alphabet[i];
-        button.innerText = alphabet[i];
-        letterButtons.appendChild(button);
-    }
-}
 
 // DOM elements to update as the game goes on
 const view = {
@@ -34,17 +21,54 @@ const view = {
     letterEntered: document.getElementById('letterEntered')
 }
 
+//Set up a new game
+function initialSetup() {
+    createButtons();
+    guessCount = wrongGuesses = guessCorrect = 0;
+    view.result.innerHTML = '';
+    view.scoreRight.innerHTML = `correct guesses: ${guessCorrect}`;
+    view.scoreWrong.innerHTML = `incorrect guesses: ${wrongGuesses}`;
+    hiddenLetters.length = 0;
+    document.getElementById("gameStart").style.display = "none";
+    hangMan.getWord();
+}
+
+//createButtons();
+function createButtons() {
+    const parent = document.getElementById("letterButtons");
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    for (let i = 0; i < alphabet.length; i++) {
+        let button = document.createElement("button");
+        button.id = alphabet[i];
+        button.className = "btn";
+        button.innerText = alphabet[i];
+        button.disabled = false;
+        letterButtons.appendChild(button);
+    }
+}
+
+//Get the letter from the button press and check validity
+function getTheLetter() {
+    addEventListener('click', function (event) {
+        var elementClicked = event.target;
+        // get the element clicked on
+        if (elementClicked.className === 'btn') {
+            guessLetter = elementClicked.innerText;
+            if (elementClicked.innerText !== 'Start') {
+                hangMan.letterSearch(guessLetter);
+                elementClicked.disabled = true;
+            };
+        }
+        if ((guessCorrect === uniqueLetters.size && uniqueLetters.size !== 0) || (wrongGuesses === 10)) {
+            hangMan.gameOver();
+        };
+    });
+}
+
 // Main game object
 const hangMan = {
-    startGame: function () {
-        this.getWord();
-        while ((guessCorrect < uniqueLetters.size) && (wrongGuesses < 10)) {
-            this.letterGuess();
-            this.letterSearch(guessLetter);
-        };
-        this.gameOver();
-    },
-
     // Choose random word and add to the word and reveal array
     getWord: function () {
         let wordCount = myWords.length;
@@ -58,42 +82,11 @@ const hangMan = {
         view.guessTheWord.innerHTML = hiddenLetters.join(' ');
     },
 
-    // enter letter and check for single charachter and already used
-    letterGuess: function () {
-        let alreadyUsed = 1;
-        guessCount = wrongGuesses + guessCorrect;
-        guessLetter = prompt(`Guess a letter`);
-        guessLetter = guessLetter.toLowerCase();
-        // Loop to check the letter is singular and valid
-        while (guessLetter.length !== 1 || this.isValidCraracter(guessLetter)) {
-            guessLetter = prompt(`Please enter 1 letter only`);
-            guessLetter = guessLetter.toLowerCase();
-        };
-        // Loop to check the letter is unique (may be removed if buttons are implemented)
-        while (alreadyUsed !== 0) {
-            for (let i = 0; i <= lettersGuessed.length; i++) {
-                if (lettersGuessed[i] === guessLetter) {
-                    guessLetter = prompt(`Letter already used, please try again`);
-                    guessLetter = guessLetter.toLowerCase();
-                    alreadyUsed = 1;
-                } else {
-                    alreadyUsed = 0;
-                };
-            };
-        };
-        lettersGuessed[guessCount] = guessLetter;
-    },
-
-    // Make sure the entered character ia a valid letter a -> z
-    isValidCraracter: function (letter) {
-        let myRegExp = /[a-z]/ig;
-        return !(myRegExp.test(letter));
-    },
-
     // Check to see if the entered letter is contained in the word and reveal 
     letterSearch: function (letter) {
         let foundAtPosition = letterCount = 0;
         let guessMade = [];
+        guessCount = wrongGuesses + guessCorrect;
         while (foundAtPosition !== -1) {
             foundAtPosition = guessWord.indexOf(letter, foundAtPosition);
             if (foundAtPosition !== -1) {
@@ -119,13 +112,25 @@ const hangMan = {
     },
 
     gameOver: function () {
+        const parent = document.getElementById("letterButtons");
+        while (parent.firstChild) {
+            parent.removeChild(parent.firstChild);
+        }
         if (wrongGuesses === 10) {
             view.result.innerHTML = "Game over. The correct word was:"
             view.guessTheWord.innerHTML = wordLetters.join(' ');
         } else {
             view.result.innerHTML = "Game over. You guessed the correct word"
         };
+        document.getElementById("gameStart").style.display = "inline";
     },
 }
 
-//hangMan.startGame();
+getTheLetter();
+
+let svg = document.getElementById("imageReveal");
+svg.addEventListener("load",function(){
+    let svgDoc = svg.contentDocument;
+    let head = svgDoc.getElementById("1");
+    head.style.display = "none";
+})
