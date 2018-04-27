@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Guess The Word Game</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
 
 </head>
 
@@ -13,16 +14,18 @@
     <header>
         <h1>Guess The Word</h1>
     </header>
-    <h4>Reveal the word by guessing the hidden letters. 10 Wrong answers means Game Over.</h4>
-    <button id="gameStart" onclick="initialSetup()">Start</button>
-    <p id="result"> </p>
-    <p class="hiddenWord guessWord" id="guessTheWord"></p>
-    <p id="scoresRight" display="inline">correct guesses: 0</p>
-    <p id="scoresWrong" display="inline">incorrect guesses: 0</p>
+    <h4 class="intro">Reveal the word by guessing the hidden letters. 10 Wrong answers means Game Over.</h4>
+    <canvas id="myCanvas" width="500" height="400" style="border:1px solid #000000;"></canvas>
+    <p>.</p>
+    <button class=" button" id="gameStart" onclick="hangMan.initialSetup()" style="display:block">Start</button>
+    <p class="result" id="result"> </p>
+    <p class="hiddenWord guessWord result" id="guessTheWord"></p>
+    <p id="scoresRight" class="correct" display="inline">correct guesses: 0</p>
+    <p id="scoresWrong" class="wrong" display="inline">incorrect guesses: 0</p>
     <div id="letterButtons">
 
     </div>
-    <object type="image/svg+xml" data="face.svg" id="imageReveal"></object>
+    <!-- <object type="image/svg+xml" data="face.svg" id="imageReveal"></object> -->
     <script src="hangMan.js"></script>
 </body>
 
