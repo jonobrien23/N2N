@@ -105,9 +105,7 @@ const view = {
     scoreRight: document.getElementById('scoresRight'),
     scoreWrong: document.getElementById('scoresWrong'),
     guessTheWord: document.getElementById('guessTheWord'),
-    result: document.getElementById('result'),
-    evaluateLetter: document.getElementById('evaluateLetter'),
-    letterEntered: document.getElementById('letterEntered')
+    result: document.getElementById('result')
 }
 
 // Main game object
@@ -141,6 +139,19 @@ const hangMan = {
         }
     },
 
+    // Choose random word and add to the word and reveal array
+    getWord: function() {
+        let wordCount = myWords.length;
+        let chosenWord = (Math.floor(Math.random() * (wordCount - 1)) + 1);
+        guessWord = myWords[chosenWord].toLowerCase();
+        wordLetters = guessWord.split("");
+        for (let i = 0; i < wordLetters.length; i++) {
+            hiddenLetters[i] = '_';
+        };
+        uniqueLetters = new Set(guessWord);
+        view.guessTheWord.innerHTML = hiddenLetters.join(' ');
+    },
+
     //Get the letter from the button press and check validity
     getTheLetter: function() {
         addEventListener('click', function(event) {
@@ -158,19 +169,6 @@ const hangMan = {
                 hangMan.gameOver();
             };
         });
-    },
-
-    // Choose random word and add to the word and reveal array
-    getWord: function() {
-        let wordCount = myWords.length;
-        let chosenWord = (Math.floor(Math.random() * (wordCount - 1)) + 1);
-        guessWord = myWords[chosenWord].toLowerCase();
-        wordLetters = guessWord.split("");
-        for (let i = 0; i < wordLetters.length; i++) {
-            hiddenLetters[i] = '_';
-        };
-        uniqueLetters = new Set(guessWord);
-        view.guessTheWord.innerHTML = hiddenLetters.join(' ');
     },
 
     // Check to see if the entered letter is contained in the word and reveal 
