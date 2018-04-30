@@ -1,12 +1,10 @@
-@import
-url('https://fonts.googleapis.com/css?family=Baloo+Da|Roboto');
-
-body{
+@import url('https://fonts.googleapis.com/css?family=Baloo+Da|Roboto');
+body {
     background: #5F1C1C;
     font-family: 'Roboto', sans-serif;
 }
 
-h1{
+h1 {
     color: #611BBD;
     font-family: 'Baloo Da', cursive;
     font-weight: 900;
@@ -15,8 +13,9 @@ h1{
     margin: 0;
 }
 
-.button {
-    Position:relative; left: 45%;
+.startButton {
+    Position: relative;
+    left: 45%;
     color: #ffffff;
     background-color: #611BBD;
     border-color: #130269;
@@ -26,7 +25,7 @@ h1{
     font-size: 24px;
 }
 
-button {
+.letterBtn {
     color: #ffffff;
     background-color: #611BBD;
     border-color: #130269;
@@ -36,11 +35,26 @@ button {
     font-size: 24px;
 }
 
-button:hover{
-    transform: 3px, 3px;
+.letterBtn:hover {
+    box-shadow: 1px 1px #53a7ea, 2px 2px #53a7ea, 3px 3px #53a7ea;
+    transform: translateX(-3px);
+    transform: translateY(-3px);
+    transition: 0.1s;
 }
 
-.intro{
+.pressedBtn {
+    color: #bbbbbb;
+    background-color: rgb(112, 112, 112);
+    border-color: #303030;
+    margin: 10px 20px;
+    border-radius: 4px;
+    width: 75px;
+    font-size: 24px;
+    opacity: 0.5;
+    transition: 0.1s;
+}
+
+.intro {
     color: #fff;
     margin: 1em 0;
     width: 100%;
@@ -48,11 +62,11 @@ button:hover{
     text-align: center;
 }
 
-.result{
+.result {
     color: #fff;
     margin: 1em 0;
     width: 100%;
-    font-size: 55px;
+    font-size: 45px;
     text-align: center;
 }
 
@@ -61,7 +75,7 @@ button:hover{
     font-family: 'Baloo Da', cursive;
     font-weight: 500;
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     margin: 0;
 }
 
@@ -70,6 +84,6 @@ button:hover{
     font-family: 'Baloo Da', cursive;
     font-weight: 500;
     text-align: center;
-    font-size: 30px;
+    font-size: 25px;
     margin: 0;
 }

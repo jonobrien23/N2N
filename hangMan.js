@@ -1,85 +1,86 @@
 // HangMan set variables
 const alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
-    "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+];
 let letterButtons = document.getElementById("letterButtons");
 
-const myWords = ["Hello", "Goodbye", "Today", "Tomorrow"];  // Words for game
-let guessCount = wrongGuesses = guessCorrect = 0;           // Score counters
-let guessWord;                                              // Word for player to guess 
-let guessLetter;                                            // Letter the player chooses
-let hiddenLetters = [];                                     // Array to hide and reveal word0 per guess
-let wordLetters = [];                                       // Array of the letters in the word to guess
-let uniqueLetters = new Set();                              // Unique letters in the word to guess                                         // Array of face elements to reveal on wrong guesses
+const myWords = ["Hello", "Goodbye", "Today", "Tomorrow"]; // Words for game
+let guessCount = wrongGuesses = guessCorrect = 0; // Score counters
+let guessWord; // Word for player to guess 
+let guessLetter; // Letter the player chooses
+let hiddenLetters = []; // Array to hide and reveal word0 per guess
+let wordLetters = []; // Array of the letters in the word to guess
+let uniqueLetters = new Set(); // Unique letters in the word to guess
 let canvas = document.getElementById('myCanvas');
 let context = canvas.getContext('2d');
 context.lineWidth = 5;
 canvas.style = "Position: relative; left: 50%; width: 400px; margin-left: -200px";
-canvas.fillStyle="#FFFFFF";
+canvas.fillStyle = "#FFFFFF";
 
 const graphics = {
-    base: function () {
+    base: function() {
         context.beginPath();
         context.moveTo(20, 380);
         context.bezierCurveTo(20, 360, 480, 360, 480, 380);
         context.stroke();
     },
 
-    stand: function () {
+    stand: function() {
         context.beginPath();
         context.moveTo(40, 390);
         context.bezierCurveTo(20, 30, 40, 30, 50, 30);
         context.stroke();
     },
 
-    gib: function () {
+    gib: function() {
         context.beginPath();
         context.moveTo(25, 35);
         context.bezierCurveTo(20, 30, 40, 25, 275, 40);
         context.stroke();
     },
 
-    noose: function () {
+    noose: function() {
         context.beginPath();
         context.moveTo(250, 30);
         context.bezierCurveTo(240, 55, 240, 75, 250, 100);
         context.stroke();
     },
 
-    head: function () {
+    head: function() {
         context.beginPath();
         context.arc(250, 135, 40, 0, 2 * Math.PI);
         context.stroke();
     },
 
-    body: function () {
+    body: function() {
         context.beginPath();
         context.moveTo(250, 170);
         context.bezierCurveTo(240, 265, 240, 295, 240, 310);
         context.stroke();
     },
 
-    leftArm: function () {
+    leftArm: function() {
         context.beginPath();
         context.moveTo(260, 200);
         context.bezierCurveTo(250, 185, 240, 190, 150, 180);
         context.stroke();
     },
 
-    rightArm: function () {
+    rightArm: function() {
         context.beginPath();
         context.moveTo(245, 200);
         context.bezierCurveTo(235, 195, 245, 200, 345, 210);
         context.stroke();
     },
 
-    leftLeg: function () {
+    leftLeg: function() {
         context.beginPath();
         context.moveTo(242, 295);
         context.bezierCurveTo(240, 305, 208, 345, 200, 350);
         context.stroke();
     },
 
-    rightLeg: function () {
+    rightLeg: function() {
         context.beginPath();
         context.moveTo(237, 295);
         context.bezierCurveTo(240, 305, 270, 340, 295, 355);
@@ -88,15 +89,16 @@ const graphics = {
 }
 
 const drawHangMan = [graphics.base,
-graphics.stand,
-graphics.gib,
-graphics.noose,
-graphics.head,
-graphics.body,
-graphics.leftArm,
-graphics.rightArm,
-graphics.leftLeg,
-graphics.rightLeg];
+    graphics.stand,
+    graphics.gib,
+    graphics.noose,
+    graphics.head,
+    graphics.body,
+    graphics.leftArm,
+    graphics.rightArm,
+    graphics.leftLeg,
+    graphics.rightLeg
+];
 
 // DOM elements to update as the game goes on
 const view = {
@@ -111,7 +113,7 @@ const view = {
 // Main game object
 const hangMan = {
     //Set up a new game
-    initialSetup: function () {
+    initialSetup: function() {
         this.createButtons();
         guessCount = wrongGuesses = guessCorrect = 0;
         view.result.innerHTML = '';
@@ -124,7 +126,7 @@ const hangMan = {
     },
 
     //createButtons();
-    createButtons: function () {
+    createButtons: function() {
         const parent = document.getElementById("letterButtons");
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
@@ -132,7 +134,7 @@ const hangMan = {
         for (let i = 0; i < alphabet.length; i++) {
             let button = document.createElement("button");
             button.id = alphabet[i];
-            button.className = "btn";
+            button.className = "letterBtn";
             button.innerText = alphabet[i];
             button.disabled = false;
             letterButtons.appendChild(button);
@@ -140,15 +142,16 @@ const hangMan = {
     },
 
     //Get the letter from the button press and check validity
-    getTheLetter: function () {
-        addEventListener('click', function (event) {
+    getTheLetter: function() {
+        addEventListener('click', function(event) {
             var elementClicked = event.target;
             // get the element clicked on
-            if (elementClicked.className === 'btn') {
+            if (elementClicked.className === 'letterBtn') {
                 guessLetter = elementClicked.innerText;
                 if (elementClicked.innerText !== 'Start') {
                     hangMan.letterSearch(guessLetter);
                     elementClicked.disabled = true;
+                    elementClicked.className = 'pressedBtn';
                 };
             }
             if ((guessCorrect === uniqueLetters.size && uniqueLetters.size !== 0) || (wrongGuesses === 10)) {
@@ -158,7 +161,7 @@ const hangMan = {
     },
 
     // Choose random word and add to the word and reveal array
-    getWord: function () {
+    getWord: function() {
         let wordCount = myWords.length;
         let chosenWord = (Math.floor(Math.random() * (wordCount - 1)) + 1);
         guessWord = myWords[chosenWord].toLowerCase();
@@ -171,7 +174,7 @@ const hangMan = {
     },
 
     // Check to see if the entered letter is contained in the word and reveal 
-    letterSearch: function (letter) {
+    letterSearch: function(letter) {
         let foundAtPosition = letterCount = 0;
         let guessMade = [];
         guessCount = wrongGuesses + guessCorrect;
@@ -202,7 +205,7 @@ const hangMan = {
         view.scoreWrong.innerHTML = `incorrect guesses: ${wrongGuesses}`;
     },
 
-    gameOver: function () {
+    gameOver: function() {
         const parent = document.getElementById("letterButtons");
         while (parent.firstChild) {
             parent.removeChild(parent.firstChild);
